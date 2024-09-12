@@ -1,9 +1,8 @@
 package com.example.agregador_investimentos.controller;
 
 
-import com.example.agregador_investimentos.dto.CreateUserDtoRequest;
+import com.example.agregador_investimentos.dto.*;
 
-import com.example.agregador_investimentos.dto.UpdateUserDtoRequest;
 import com.example.agregador_investimentos.model.entity.User;
 import com.example.agregador_investimentos.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> listUsers() {
+    public ResponseEntity<List<UserDtoResponse>> listUsers() {
         return ResponseEntity.ok(this.userService.listUsers());
 
     }
@@ -65,4 +63,31 @@ public class UserController {
 
 
     }
+
+    @PostMapping ("/{userId}/accounts")
+    public ResponseEntity<Void> createAccountById(@PathVariable("userId") String userId,
+    @RequestBody CreateAccountDtoRequest createAccountDtoRequest){
+
+      userService.createAccount(userId,createAccountDtoRequest);
+
+        return ResponseEntity.ok().build();
+
+
+
+    }
+
+
+
+
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccountDtoResponse>> createAccountById(@PathVariable("userId") String userId ){
+
+        List<AccountDtoResponse> accounts = userService.lisAccounts(userId);
+
+        return ResponseEntity.ok(accounts);
+
+
+
+    }
+
 }
